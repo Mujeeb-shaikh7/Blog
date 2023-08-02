@@ -12,7 +12,10 @@ const Home = () => {
             try {
              let posts=docsSnap.docs.map((doc)=>{
                 
-                return doc.data()
+                return {
+                    id:doc.id,
+                    ...doc.data()
+                }
              });
              setPosts(posts)
             } catch (error) {
