@@ -1,17 +1,36 @@
 import React from 'react'
 import { useState } from 'react';
-
+import {firestore} from '../firebase';
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebase';
 const CreatePost = () => {
     const [title, setTitle] = useState('');
     const [subTitle, setSubTitle] = useState('');
     const [content, setContent] = useState('');
   
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
       e.preventDefault();
   
       console.log('title', title);
       console.log('subTitle', subTitle);
       console.log('content', content);
+      try {
+        const docRef = await addDoc(collection(db, "posts"), {
+          title,
+          subTitle,
+          content,
+          createdAt:new Date()
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    //   firestore.collection('posts').add({
+    //     title,
+    //     subTitle,
+    //     content,
+    //     createdAt:new Date()
+    //   })
     }
   return (
     <div className='create-post'>
